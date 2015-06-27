@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CollegeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="AccountId" />
+    </Key>
+    <Property Name="AccountId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="RuleId" Type="Int32" />
+    <Property Name="TeacherId" Type="Int32" />
+    <NavigationProperty Name="Rule" Relationship="Self.FK_Accounts_Rules" FromRole="Accounts" ToRole="Rules" />
+    <NavigationProperty Name="Teacher" Relationship="Self.FK_Accounts_Teachers" FromRole="Accounts" ToRole="Teachers" />
+  </EntityType>
+  <EntityType Name="Audience">
+    <Key>
+      <PropertyRef Name="AudienceId" />
+    </Key>
+    <Property Name="AudienceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ScheduleLessons" Relationship="Self.FK_ScheduleLessons_Audiences" FromRole="Audiences" ToRole="ScheduleLessons" />
+  </EntityType>
+  <EntityType Name="Evaluation">
+    <Key>
+      <PropertyRef Name="EvaluationId" />
+    </Key>
+    <Property Name="EvaluationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <Property Name="StudentId" Type="Int32" />
+    <Property Name="TeacherId" Type="Int32" />
+    <Property Name="SubjectId" Type="Int32" />
+    <Property Name="Mark" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_Evaluations_Students" FromRole="Evaluations" ToRole="Students" />
+    <NavigationProperty Name="Subject" Relationship="Self.FK_Evaluations_Subjects" FromRole="Evaluations" ToRole="Subjects" />
+    <NavigationProperty Name="Teacher" Relationship="Self.FK_Evaluations_Teachers" FromRole="Evaluations" ToRole="Teachers" />
+  </EntityType>
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="GroupId" />
+    </Key>
+    <Property Name="GroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ScheduleLessons" Relationship="Self.FK_ScheduleLessons_Groups" FromRole="Groups" ToRole="ScheduleLessons" />
+    <NavigationProperty Name="Students" Relationship="Self.FK_Students_Groups" FromRole="Groups" ToRole="Students" />
+  </EntityType>
+  <EntityType Name="Lesson">
+    <Key>
+      <PropertyRef Name="LessonId" />
+    </Key>
+    <Property Name="LessonId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StartTime" Type="Time" Precision="7" />
+    <Property Name="EndTime" Type="Time" Precision="7" />
+    <Property Name="LessonNumber" Type="Int32" />
+    <NavigationProperty Name="ScheduleLessons" Relationship="Self.FK_ScheduleLessons_Lessons" FromRole="Lessons" ToRole="ScheduleLessons" />
+  </EntityType>
+  <EntityType Name="Rule">
+    <Key>
+      <PropertyRef Name="RuleId" />
+    </Key>
+    <Property Name="RuleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RuleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Accounts" Relationship="Self.FK_Accounts_Rules" FromRole="Rules" ToRole="Accounts" />
+  </EntityType>
+  <EntityType Name="ScheduleLesson">
+    <Key>
+      <PropertyRef Name="ScheduleId" />
+    </Key>
+    <Property Name="ScheduleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LessonId" Type="Int32" />
+    <Property Name="GroupId" Type="Int32" />
+    <Property Name="TeacherId" Type="Int32" />
+    <Property Name="SubjectId" Type="Int32" />
+    <Property Name="AudienceId" Type="Int32" />
+    <Property Name="Day" Type="Int32" />
+    <Property Name="TopFlag" Type="Boolean" />
+    <NavigationProperty Name="Audience" Relationship="Self.FK_ScheduleLessons_Audiences" FromRole="ScheduleLessons" ToRole="Audiences" />
+    <NavigationProperty Name="Group" Relationship="Self.FK_ScheduleLessons_Groups" FromRole="ScheduleLessons" ToRole="Groups" />
+    <NavigationProperty Name="Lesson" Relationship="Self.FK_ScheduleLessons_Lessons" FromRole="ScheduleLessons" ToRole="Lessons" />
+    <NavigationProperty Name="Subject" Relationship="Self.FK_ScheduleLessons_Subjects" FromRole="ScheduleLessons" ToRole="Subjects" />
+    <NavigationProperty Name="Teacher" Relationship="Self.FK_ScheduleLessons_Teachers" FromRole="ScheduleLessons" ToRole="Teachers" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StudentId" />
+    </Key>
+    <Property Name="StudentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="StudentName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="StudentLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="GroupId" Type="Int32" />
+    <NavigationProperty Name="Evaluations" Relationship="Self.FK_Evaluations_Students" FromRole="Students" ToRole="Evaluations" />
+    <NavigationProperty Name="Group" Relationship="Self.FK_Students_Groups" FromRole="Students" ToRole="Groups" />
+  </EntityType>
+  <EntityType Name="Subject">
+    <Key>
+      <PropertyRef Name="SubjectId" />
+    </Key>
+    <Property Name="SubjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SubjectName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Evaluations" Relationship="Self.FK_Evaluations_Subjects" FromRole="Subjects" ToRole="Evaluations" />
+    <NavigationProperty Name="ScheduleLessons" Relationship="Self.FK_ScheduleLessons_Subjects" FromRole="Subjects" ToRole="ScheduleLessons" />
+  </EntityType>
+  <EntityType Name="Teacher">
+    <Key>
+      <PropertyRef Name="TeacherId" />
+    </Key>
+    <Property Name="TeacherId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TeacherFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TeacherName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TeacherLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TeacherPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Accounts" Relationship="Self.FK_Accounts_Teachers" FromRole="Teachers" ToRole="Accounts" />
+    <NavigationProperty Name="Evaluations" Relationship="Self.FK_Evaluations_Teachers" FromRole="Teachers" ToRole="Evaluations" />
+    <NavigationProperty Name="ScheduleLessons" Relationship="Self.FK_ScheduleLessons_Teachers" FromRole="Teachers" ToRole="ScheduleLessons" />
+  </EntityType>
+  <Association Name="FK_Accounts_Rules">
+    <End Role="Rules" Type="Self.Rule" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Accounts" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rules">
+        <PropertyRef Name="RuleId" />
+      </Principal>
+      <Dependent Role="Accounts">
+        <PropertyRef Name="RuleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Accounts_Teachers">
+    <End Role="Teachers" Type="Self.Teacher" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Accounts" Type="Self.Account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teachers">
+        <PropertyRef Name="TeacherId" />
+      </Principal>
+      <Dependent Role="Accounts">
+        <PropertyRef Name="TeacherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ScheduleLessons_Audiences">
+    <End Role="Audiences" Type="Self.Audience" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ScheduleLessons" Type="Self.ScheduleLesson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Audiences">
+        <PropertyRef Name="AudienceId" />
+      </Principal>
+      <Dependent Role="ScheduleLessons">
+        <PropertyRef Name="AudienceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Evaluations_Students">
+    <End Role="Students" Type="Self.Student" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Evaluations" Type="Self.Evaluation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Students">
+        <PropertyRef Name="StudentId" />
+      </Principal>
+      <Dependent Role="Evaluations">
+        <PropertyRef Name="StudentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Evaluations_Subjects">
+    <End Role="Subjects" Type="Self.Subject" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Evaluations" Type="Self.Evaluation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subjects">
+        <PropertyRef Name="SubjectId" />
+      </Principal>
+      <Dependent Role="Evaluations">
+        <PropertyRef Name="SubjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Evaluations_Teachers">
+    <End Role="Teachers" Type="Self.Teacher" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Evaluations" Type="Self.Evaluation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teachers">
+        <PropertyRef Name="TeacherId" />
+      </Principal>
+      <Dependent Role="Evaluations">
+        <PropertyRef Name="TeacherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ScheduleLessons_Groups">
+    <End Role="Groups" Type="Self.Group" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ScheduleLessons" Type="Self.ScheduleLesson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groups">
+        <PropertyRef Name="GroupId" />
+      </Principal>
+      <Dependent Role="ScheduleLessons">
+        <PropertyRef Name="GroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Students_Groups">
+    <End Role="Groups" Type="Self.Group" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Students" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groups">
+        <PropertyRef Name="GroupId" />
+      </Principal>
+      <Dependent Role="Students">
+        <PropertyRef Name="GroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ScheduleLessons_Lessons">
+    <End Role="Lessons" Type="Self.Lesson" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ScheduleLessons" Type="Self.ScheduleLesson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Lessons">
+        <PropertyRef Name="LessonId" />
+      </Principal>
+      <Dependent Role="ScheduleLessons">
+        <PropertyRef Name="LessonId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ScheduleLessons_Subjects">
+    <End Role="Subjects" Type="Self.Subject" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ScheduleLessons" Type="Self.ScheduleLesson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subjects">
+        <PropertyRef Name="SubjectId" />
+      </Principal>
+      <Dependent Role="ScheduleLessons">
+        <PropertyRef Name="SubjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ScheduleLessons_Teachers">
+    <End Role="Teachers" Type="Self.Teacher" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ScheduleLessons" Type="Self.ScheduleLesson" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teachers">
+        <PropertyRef Name="TeacherId" />
+      </Principal>
+      <Dependent Role="ScheduleLessons">
+        <PropertyRef Name="TeacherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CollegeEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Accounts" EntityType="Self.Account" />
+    <EntitySet Name="Audiences" EntityType="Self.Audience" />
+    <EntitySet Name="Evaluations" EntityType="Self.Evaluation" />
+    <EntitySet Name="Groups" EntityType="Self.Group" />
+    <EntitySet Name="Lessons" EntityType="Self.Lesson" />
+    <EntitySet Name="Rules" EntityType="Self.Rule" />
+    <EntitySet Name="ScheduleLessons" EntityType="Self.ScheduleLesson" />
+    <EntitySet Name="Students" EntityType="Self.Student" />
+    <EntitySet Name="Subjects" EntityType="Self.Subject" />
+    <EntitySet Name="Teachers" EntityType="Self.Teacher" />
+    <AssociationSet Name="FK_Accounts_Rules" Association="Self.FK_Accounts_Rules">
+      <End Role="Rules" EntitySet="Rules" />
+      <End Role="Accounts" EntitySet="Accounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Accounts_Teachers" Association="Self.FK_Accounts_Teachers">
+      <End Role="Teachers" EntitySet="Teachers" />
+      <End Role="Accounts" EntitySet="Accounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ScheduleLessons_Audiences" Association="Self.FK_ScheduleLessons_Audiences">
+      <End Role="Audiences" EntitySet="Audiences" />
+      <End Role="ScheduleLessons" EntitySet="ScheduleLessons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Evaluations_Students" Association="Self.FK_Evaluations_Students">
+      <End Role="Students" EntitySet="Students" />
+      <End Role="Evaluations" EntitySet="Evaluations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Evaluations_Subjects" Association="Self.FK_Evaluations_Subjects">
+      <End Role="Subjects" EntitySet="Subjects" />
+      <End Role="Evaluations" EntitySet="Evaluations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Evaluations_Teachers" Association="Self.FK_Evaluations_Teachers">
+      <End Role="Teachers" EntitySet="Teachers" />
+      <End Role="Evaluations" EntitySet="Evaluations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ScheduleLessons_Groups" Association="Self.FK_ScheduleLessons_Groups">
+      <End Role="Groups" EntitySet="Groups" />
+      <End Role="ScheduleLessons" EntitySet="ScheduleLessons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Students_Groups" Association="Self.FK_Students_Groups">
+      <End Role="Groups" EntitySet="Groups" />
+      <End Role="Students" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ScheduleLessons_Lessons" Association="Self.FK_ScheduleLessons_Lessons">
+      <End Role="Lessons" EntitySet="Lessons" />
+      <End Role="ScheduleLessons" EntitySet="ScheduleLessons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ScheduleLessons_Subjects" Association="Self.FK_ScheduleLessons_Subjects">
+      <End Role="Subjects" EntitySet="Subjects" />
+      <End Role="ScheduleLessons" EntitySet="ScheduleLessons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ScheduleLessons_Teachers" Association="Self.FK_ScheduleLessons_Teachers">
+      <End Role="Teachers" EntitySet="Teachers" />
+      <End Role="ScheduleLessons" EntitySet="ScheduleLessons" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
